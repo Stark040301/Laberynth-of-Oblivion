@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 949f0e36aef85ab409c9f4c34d81ea23
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - wallSprite: {fileID: 277250923051691151, guid: 53dd95058b23b1028b6689a55c69b537, type: 3}
+  - pathSprite: {fileID: 6909542661516767937, guid: 402cfa567d0484069957eec643fb1add, type: 3}
+  - startSprite: {fileID: 6349570363969550959, guid: 53aef92c0f834ec6cb03f22145d4c3ef, type: 3}
+  - trapSprite: {fileID: 8241927909186447412, guid: bbe606b3844c70b9fb46504f6ba88b06, type: 3}
+  - itemSprite: {fileID: 8241927909186447412, guid: 59ffb37f68fd012cfbeb30302dd5007f, type: 3}
+  - stoneSprite: {fileID: 7085128962809493129, guid: ae67561d94b9cd477adbaca824166785, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
