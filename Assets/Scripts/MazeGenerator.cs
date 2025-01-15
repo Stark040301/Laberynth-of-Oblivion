@@ -27,6 +27,7 @@ public class MazeGenerator : MonoBehaviour
     private CellType[,] maze;
     private System.Random random = new System.Random();
     private (int dx, int dy)[] directions = { (0, -1), (1, 0), (0, 1), (-1, 0) };
+    private GameObject mazeParent;
 
     void Start()
     {
@@ -144,32 +145,43 @@ public class MazeGenerator : MonoBehaviour
 
     private void RenderMaze()
     {
+        //Create an empty gameObject to store the maze
+        mazeParent = new GameObject("Maze");
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
                 Vector3 position = new Vector3(i, j, 0);
+                GameObject prefab = null;
 
                 switch (maze[i, j])
                 {
                     case CellType.Wall:
-                        Instantiate(wallSprite, position, Quaternion.identity);
+                        prefab = wallSprite;
                         break;
                     case CellType.Path:
-                        Instantiate(pathSprite, position, Quaternion.identity);
+                        prefab = pathSprite;
                         break;
                     case CellType.Start:
-                        Instantiate(startSprite, position, Quaternion.identity);
+                        prefab = startSprite;
                         break;
                     case CellType.Trap:
-                        Instantiate(trapSprite, position, Quaternion.identity);
+                        prefab = trapSprite;
                         break;
                     case CellType.Item:
-                        Instantiate(itemSprite, position, Quaternion.identity);
+                        prefab = itemSprite;
                         break;
                     case CellType.Stone:
-                        Instantiate(stoneSprite, position, Quaternion.identity);
+                        prefab = stoneSprite;
                         break;
+                }
+
+                if (prefab != null)
+                {
+                    //Instantiate and asings as a children of maze GameObject
+                    GameObject tile = Instantiate(prefab, position, Quaternion.identity);
+                    tile.transform.SetParent(mazeParent.transform);
+                    
                 }
             }
         }
