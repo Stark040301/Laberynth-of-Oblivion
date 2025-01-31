@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PlayerHandler : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] private TMP_Text[] currentMobility;
     [SerializeField] private TMP_Text[] colectedStonesText;
     [SerializeField] private TMP_Text[] cooldownText;
+    private System.Random random = new System.Random();
     public bool player1Move = false;
     public bool player3Move = false;
     public bool player2Move = false;
@@ -142,6 +144,7 @@ public class PlayerHandler : MonoBehaviour
                     Debug.Log("Current cell: " + character.currentCell);
                     Debug.Log(character.characterGO.name + "is on the move");
                     currentPlayer.remainingSteps--; // Reducir los pasos restantes
+                    currentMobility[currentPlayer.playerIndex].text = "" + currentPlayer.remainingSteps;
                     Debug.Log("Remaining steps: " + currentPlayer.remainingSteps);
                 }
                 else
@@ -152,10 +155,24 @@ public class PlayerHandler : MonoBehaviour
                 {
                     currentPlayer.collectedStones++;
                     tilemap.SetTile(targetCell, pathTile);
+                    colectedStonesText[currentPlayer.playerIndex].text = "" +  currentPlayer.collectedStones;            
                 }
                 if (targetTile == trapTile)
                 {
-                    //SendToStartTrap();
+                    StoneTrap();
+                    int x = random.Next(2);
+                    switch (x)
+                    {
+                        case 0:
+                            SendToStartTrap();
+                            break;
+                        case 1:
+                            StoneTrap();
+                            break;
+                        case 2:
+                            CooldownTrap();
+                            break;
+                    } 
                     tilemap.SetTile(targetCell, pathTile);
                 }
                 if (targetTile == itemTile)
@@ -174,10 +191,17 @@ public class PlayerHandler : MonoBehaviour
         if (currentPlayer == playerList[0])
         {
             currentPlayer = playerList[1];
-        }
-        if (player1Move)
-        {
-            player1Move = false;
+            if (player1Move)
+            {
+                player1Move = false;
+            }
+            foreach (Characters character in currentPlayer.team)
+            {
+                if (character.cooldownTimer > 0)
+                {
+                    character.cooldownTimer--;
+                }
+            }
         }
     }
     public void EndP2Turn()
@@ -187,6 +211,17 @@ public class PlayerHandler : MonoBehaviour
             if (currentPlayer == playerList[1])
             {
                 currentPlayer = playerList[0];
+                if (player2Move)
+                {
+                    player2Move = false;
+                }
+                foreach (Characters character in currentPlayer.team)
+                {
+                    if (character.cooldownTimer > 0)
+                    {
+                        character.cooldownTimer--;
+                    }
+                }
             }
         }
         else
@@ -194,11 +229,18 @@ public class PlayerHandler : MonoBehaviour
             if (currentPlayer == playerList[1])
             {
                 currentPlayer = playerList[2];
+                if (player2Move)
+                {
+                    player2Move = false;
+                }
+                foreach (Characters character in currentPlayer.team)
+                {
+                    if (character.cooldownTimer > 0)
+                    {
+                        character.cooldownTimer--;
+                    }
+                }
             }
-        }
-        if (player2Move)
-        {
-            player2Move = false;
         }
     }
     public void EndP3Turn()
@@ -208,6 +250,17 @@ public class PlayerHandler : MonoBehaviour
             if (currentPlayer == playerList[2])
             {
                 currentPlayer = playerList[0];
+                if (player3Move)
+                {
+                    player3Move = false;
+                }
+                foreach (Characters character in currentPlayer.team)
+                {
+                    if (character.cooldownTimer > 0)
+                    {
+                        character.cooldownTimer--;
+                    }
+                }
             }
         }
         else
@@ -215,11 +268,18 @@ public class PlayerHandler : MonoBehaviour
             if (currentPlayer == playerList[2])
             {
                 currentPlayer = playerList[3];
+                if (player3Move)
+                {
+                    player3Move = false;
+                }
+                foreach (Characters character in currentPlayer.team)
+                {
+                    if (character.cooldownTimer > 0)
+                    {
+                        character.cooldownTimer--;
+                    }
+                }
             }
-        }
-        if (player3Move)
-        {
-            player3Move = false;
         }
     }
     public void EndP4Turn()
@@ -227,10 +287,17 @@ public class PlayerHandler : MonoBehaviour
         if (currentPlayer == playerList[3])
         {
             currentPlayer = playerList[0];
-        }
-        if (player4Move)
-        {
-            player4Move = false;
+            if (player4Move)
+            {
+                player4Move = false;
+            }
+            foreach (Characters character in currentPlayer.team)
+            {
+                if (character.cooldownTimer > 0)
+                {
+                    character.cooldownTimer--;
+                }
+            }
         }
     }
     private void SetImages()
@@ -283,7 +350,7 @@ public class PlayerHandler : MonoBehaviour
         abilityText[teamIndex].text = playerList[teamIndex].team[charIndex].characterAbilityName + ": " + playerList[teamIndex].team[charIndex].characterAbility;
         currentMobility[teamIndex].text = "" + playerList[teamIndex].team[charIndex].characterMobility;
         colectedStonesText[teamIndex].text = "" +  playerList[teamIndex].collectedStones;
-        cooldownText[teamIndex].text = "" +  playerList[teamIndex].team[charIndex].characterCooldown;
+        cooldownText[teamIndex].text = "" +  playerList[teamIndex].team[charIndex].cooldownTimer;
     }
 
     private void PlaceCharacters()
@@ -487,6 +554,19 @@ public class PlayerHandler : MonoBehaviour
         selectedCharacter.characterGO.transform.position = worldPosition;
         selectedCharacter.currentCell = currentPlayer.startPosition;
         selectedCharacter.Position = worldPosition;
+    }
+    private void StoneTrap()
+    {
+        if (currentPlayer.collectedStones > 0)
+        {
+            currentPlayer.collectedStones--;
+            colectedStonesText[currentPlayer.playerIndex].text = "" +  currentPlayer.collectedStones;
+        } 
+    }
+    private void CooldownTrap()
+    {
+        selectedCharacter.cooldownTimer = selectedCharacter.characterCooldown;
+        cooldownText[currentPlayer.playerIndex].text = "" +  selectedCharacter.cooldownTimer;
     }
 
 }

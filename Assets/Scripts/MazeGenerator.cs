@@ -36,7 +36,7 @@ public class MazeGenerator : MonoBehaviour
     {
         tilemap = GetComponent<Tilemap>();
         GenerateMaze();
-        PlaceRandomObjects(5, 5, 20);
+        PlaceRandomObjects(20, 0, 30);
         RenderMaze();
         CenterCamera();
     }
