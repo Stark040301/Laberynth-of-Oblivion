@@ -79,7 +79,11 @@ public class CharacterSelection : MonoBehaviour
         {
             if (selectedPlayerTeam.Count == 3)
             {
-                player2Team = selectedPlayerTeam;
+                player2Team = new List<Characters>(selectedPlayerTeam);                
+                Player player1 = new Player(0, "Player 1", player1Team, new Vector3Int(1,23,0));
+                Player player2 = new Player(1, "Player 2", player2Team, new Vector3Int(23,23,0));
+                PlayerHandler.playerList.Add(player1);
+                PlayerHandler.playerList.Add(player2);
                 ClearSelectedCharacters();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
@@ -88,7 +92,13 @@ public class CharacterSelection : MonoBehaviour
         {
             if (selectedPlayerTeam.Count == 3)
             {
-                player3Team = selectedPlayerTeam;
+                player3Team = new List<Characters>(selectedPlayerTeam);                
+                Player player1 = new Player(0, "Player 1", player1Team, new Vector3Int(1,23,0));
+                Player player2 = new Player(1, "Player 2", player2Team, new Vector3Int(23,23,0));
+                Player player3 = new Player(2, "Player 3", player3Team, new Vector3Int(23,1,0));
+                PlayerHandler.playerList.Add(player1);
+                PlayerHandler.playerList.Add(player2);
+                PlayerHandler.playerList.Add(player3);
                 ClearSelectedCharacters();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
@@ -97,10 +107,34 @@ public class CharacterSelection : MonoBehaviour
         {
             if (selectedPlayerTeam.Count == 3)
             {
-                player4Team = selectedPlayerTeam;
+                player4Team = new List<Characters>(selectedPlayerTeam);                
+                Player player1 = new Player(0, "Player 1", player1Team, new Vector3Int(1,23,0));
+                Player player2 = new Player(1, "Player 2", player2Team, new Vector3Int(23,23,0));
+                Player player3 = new Player(2, "Player 3", player3Team, new Vector3Int(23,1,0));
+                Player player4 = new Player(3, "Player 4", player4Team, new Vector3Int(1,1,0));
+                PlayerHandler.playerList.Add(player1);
+                PlayerHandler.playerList.Add(player2);
+                PlayerHandler.playerList.Add(player3);
+                PlayerHandler.playerList.Add(player4);
                 ClearSelectedCharacters();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
+        }
+        foreach (Characters character in player1Team)
+        {
+            Debug.Log(character.characterName);
+        }
+        foreach (Characters character in player2Team)
+        {
+            Debug.Log(character.characterName);
+        }
+        foreach (Characters character in player3Team)
+        {
+            Debug.Log(character.characterName);
+        }
+        foreach (Characters character in player4Team)
+        {
+            Debug.Log(character.characterName);
         }
     }
     public void GoBack()
@@ -143,8 +177,12 @@ public class CharacterSelection : MonoBehaviour
         {
             if (selectedPlayerTeam.Count == 3)
             {
-                player1Team = selectedPlayerTeam;
+                player1Team = new List<Characters>(selectedPlayerTeam);                
                 ClearSelectedCharacters();
+                foreach (Characters character in player1Team)
+                {
+                    Debug.Log(character.characterName);
+                }
                 playerIndicator.text = "Player 2";
                 nextPlayerIndicator.text = "Player 3";
                 currentPlayer++;
@@ -155,7 +193,7 @@ public class CharacterSelection : MonoBehaviour
         {
             if (selectedPlayerTeam.Count == 3)
             {
-                player2Team = selectedPlayerTeam;
+                player2Team = new List<Characters>(selectedPlayerTeam);                
                 ClearSelectedCharacters();
                 playerIndicator.text = "Player 3";
                 nextPlayerIndicator.text = "Player 4";
@@ -166,7 +204,7 @@ public class CharacterSelection : MonoBehaviour
         {
             if (selectedPlayerTeam.Count == 3)
             {
-                player3Team = selectedPlayerTeam;
+                player3Team = new List<Characters>(selectedPlayerTeam);                
                 ClearSelectedCharacters();
                 playerIndicator.text = "Player 4";
                 nextPlayerIndicator.text = "";
@@ -425,11 +463,6 @@ public class CharacterSelection : MonoBehaviour
             default:
                 Debug.LogError("Unknown button!");
                 break;
-        }
-        Debug.Log("Personajes seleccionados en el equipo:");
-        foreach (Characters character in selectedPlayerTeam)
-        {
-            Debug.Log(character.characterName);
         }
     }
 

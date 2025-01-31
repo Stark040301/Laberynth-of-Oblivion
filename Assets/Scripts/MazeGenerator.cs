@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public enum CellType
 {
@@ -17,24 +18,27 @@ public class MazeGenerator : MonoBehaviour
     public int rows = 25;
     public int cols = 25;
 
-    public GameObject wallSprite;
-    public GameObject pathSprite;
-    public GameObject startSprite;
-    public GameObject trapSprite;
-    public GameObject itemSprite;
-    public GameObject stoneSprite;
+    public Tile wallTile;
+    public Tile pathTile;
+    public Tile startTile;
+    public Tile trapTile;
+    public Tile itemTile;
+    public Tile stoneTile;
+
 
     private CellType[,] maze;
     private System.Random random = new System.Random();
     private (int dx, int dy)[] directions = { (0, -1), (1, 0), (0, 1), (-1, 0) };
-    private GameObject mazeParent;
+    [SerializeField] private GameObject mazeParent;
+    private Tilemap tilemap;
 
     void Start()
     {
+        tilemap = GetComponent<Tilemap>();
         GenerateMaze();
-        CenterCamera();
-        PlaceRandomObjects(7, 5, 10);
+        PlaceRandomObjects(5, 5, 20);
         RenderMaze();
+        CenterCamera();
     }
 
     public void SetPath(int x, int y)
@@ -65,7 +69,10 @@ public class MazeGenerator : MonoBehaviour
     {
         maze = new CellType[rows, cols];
         InitializeMaze();
-        Generate(1, 19);
+        Generate(1, 23);
+        SetStart(23,1);
+        SetStart(1,1);
+        SetStart(23,23);
     }
 
     private void InitializeMaze()
@@ -95,7 +102,7 @@ public class MazeGenerator : MonoBehaviour
                 Generate(nx, ny);// Recurse into the next cell
             }
         }
-        SetStart(1,19);
+        SetStart(1,23);
     }
 
     private bool IsInBounds(int x, int y)
@@ -145,43 +152,38 @@ public class MazeGenerator : MonoBehaviour
 
     private void RenderMaze()
     {
-        //Create an empty gameObject to store the maze
-        mazeParent = new GameObject("Maze");
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
-                Vector3 position = new Vector3(i, j, 0);
-                GameObject prefab = null;
+                Vector3Int cellPosition = new Vector3Int(i, j, 0);
+                Tile tile = null;
 
                 switch (maze[i, j])
                 {
                     case CellType.Wall:
-                        prefab = wallSprite;
+                        tile = wallTile;
                         break;
                     case CellType.Path:
-                        prefab = pathSprite;
+                        tile = pathTile;
                         break;
                     case CellType.Start:
-                        prefab = startSprite;
+                        tile = startTile;
                         break;
                     case CellType.Trap:
-                        prefab = trapSprite;
+                        tile = trapTile;
                         break;
                     case CellType.Item:
-                        prefab = itemSprite;
+                        tile = itemTile;
                         break;
                     case CellType.Stone:
-                        prefab = stoneSprite;
+                        tile = stoneTile;
                         break;
                 }
 
-                if (prefab != null)
+                if (tile != null)
                 {
-                    //Instantiate and asings as a children of maze GameObject
-                    GameObject tile = Instantiate(prefab, position, Quaternion.identity);
-                    tile.transform.SetParent(mazeParent.transform);
-                    
+                    tilemap.SetTile(cellPosition, tile);
                 }
             }
         }
