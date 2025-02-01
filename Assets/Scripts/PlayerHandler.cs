@@ -12,12 +12,24 @@ using System;
 public class PlayerHandler : MonoBehaviour
 {
     [SerializeField] public Tilemap tilemap;
+    public GameObject scBackground;
+    public GameObject C1;
+    public GameObject C2;
+    public GameObject C3;
+    public GameObject P3;
+    public GameObject P4;
+    public GameObject P3Panel;
+    public GameObject P4Panel;
     [SerializeField] private TMP_Text[] abilityText;
     [SerializeField] private TMP_Text[] characterNamesText;
     [SerializeField] private TMP_Text[] currentMobility;
     [SerializeField] private TMP_Text[] colectedStonesText;
     [SerializeField] private TMP_Text[] cooldownText;
+    [SerializeField] private Image[] targetCharactersImages;
     private System.Random random = new System.Random();
+    public Characters _targetCharacter;
+    public Player _targetPlayer;
+    public bool selectTarget = false;
     public bool player1Move = false;
     public bool player3Move = false;
     public bool player2Move = false;
@@ -53,6 +65,14 @@ public class PlayerHandler : MonoBehaviour
     void Awake()
     {
         totalPlayers = playerList.Count;
+        if (totalPlayers < 4)
+        {
+            P4Panel.SetActive(false);
+        }
+        if (totalPlayers < 3)
+        {
+            P3Panel.SetActive(false);
+        }
         currentPlayer = playerList[0];
         PlaceCharacters();
         SetImages();
@@ -130,8 +150,6 @@ public class PlayerHandler : MonoBehaviour
             {
                 // Calcular la celda destino
                 Vector3Int targetCell = character.currentCell + direction;
-                Debug.Log("Current cell: " + character.currentCell);
-                Debug.Log("Target cell: " + targetCell);
                 TileBase targetTileBase = tilemap.GetTile(targetCell);
                 Tile targetTile = targetTileBase as Tile;
 
@@ -141,11 +159,8 @@ public class PlayerHandler : MonoBehaviour
                     // Mover el prefab del personaje
                     character.characterGO.transform.position = tilemap.CellToWorld(targetCell) + cellCenterOffset();
                     character.currentCell = targetCell; // Actualizar la celda actual
-                    Debug.Log("Current cell: " + character.currentCell);
-                    Debug.Log(character.characterGO.name + "is on the move");
                     currentPlayer.remainingSteps--; // Reducir los pasos restantes
                     currentMobility[currentPlayer.playerIndex].text = "" + currentPlayer.remainingSteps;
-                    Debug.Log("Remaining steps: " + currentPlayer.remainingSteps);
                 }
                 else
                 {
@@ -184,120 +199,6 @@ public class PlayerHandler : MonoBehaviour
         else
         {
             Debug.Log("El personaje no tiene pasos restantes.");
-        }
-    }
-    public void EndP1Turn()
-    {
-        if (currentPlayer == playerList[0])
-        {
-            currentPlayer = playerList[1];
-            if (player1Move)
-            {
-                player1Move = false;
-            }
-            foreach (Characters character in currentPlayer.team)
-            {
-                if (character.cooldownTimer > 0)
-                {
-                    character.cooldownTimer--;
-                }
-            }
-        }
-    }
-    public void EndP2Turn()
-    {
-        if (totalPlayers == 2)
-        {
-            if (currentPlayer == playerList[1])
-            {
-                currentPlayer = playerList[0];
-                if (player2Move)
-                {
-                    player2Move = false;
-                }
-                foreach (Characters character in currentPlayer.team)
-                {
-                    if (character.cooldownTimer > 0)
-                    {
-                        character.cooldownTimer--;
-                    }
-                }
-            }
-        }
-        else
-        {
-            if (currentPlayer == playerList[1])
-            {
-                currentPlayer = playerList[2];
-                if (player2Move)
-                {
-                    player2Move = false;
-                }
-                foreach (Characters character in currentPlayer.team)
-                {
-                    if (character.cooldownTimer > 0)
-                    {
-                        character.cooldownTimer--;
-                    }
-                }
-            }
-        }
-    }
-    public void EndP3Turn()
-    {
-        if (totalPlayers == 3)
-        {
-            if (currentPlayer == playerList[2])
-            {
-                currentPlayer = playerList[0];
-                if (player3Move)
-                {
-                    player3Move = false;
-                }
-                foreach (Characters character in currentPlayer.team)
-                {
-                    if (character.cooldownTimer > 0)
-                    {
-                        character.cooldownTimer--;
-                    }
-                }
-            }
-        }
-        else
-        {
-            if (currentPlayer == playerList[2])
-            {
-                currentPlayer = playerList[3];
-                if (player3Move)
-                {
-                    player3Move = false;
-                }
-                foreach (Characters character in currentPlayer.team)
-                {
-                    if (character.cooldownTimer > 0)
-                    {
-                        character.cooldownTimer--;
-                    }
-                }
-            }
-        }
-    }
-    public void EndP4Turn()
-    {
-        if (currentPlayer == playerList[3])
-        {
-            currentPlayer = playerList[0];
-            if (player4Move)
-            {
-                player4Move = false;
-            }
-            foreach (Characters character in currentPlayer.team)
-            {
-                if (character.cooldownTimer > 0)
-                {
-                    character.cooldownTimer--;
-                }
-            }
         }
     }
     private void SetImages()
@@ -363,9 +264,6 @@ public class PlayerHandler : MonoBehaviour
                 {
                     if (character.characterID == i)
                     {
-                        Debug.Log($"Tilemap: {tilemap}");
-                        Debug.Log($"Start Position: {player.startPosition}");
-                        Debug.Log($"Cell Center Offset: {cellCenterOffset()}");
                         // Convertir la posición de celda en posición del mundo
                         Vector3 worldPosition = tilemap.CellToWorld(player.startPosition) + cellCenterOffset();
                         // Instanciar el prefab en la posición del mundo
@@ -375,46 +273,6 @@ public class PlayerHandler : MonoBehaviour
                         character.currentCell = player.startPosition;
                     }
                 }
-            }
-        }
-    }
-    public void P1MoveButton()
-    {
-        if (currentPlayer == playerList[0])
-        {
-            if (currentPlayer.remainingSteps == selectedCharacter.characterMobility)
-            {
-                player1Move = true;
-            }
-        }
-    }
-    public void P2MoveButton()
-    {
-        if (currentPlayer == playerList[1])
-        {
-            if (currentPlayer.remainingSteps == selectedCharacter.characterMobility)
-            {
-                player2Move = true;
-            }
-        }
-    }
-    public void P3MoveButton()
-    {
-        if (currentPlayer == playerList[2])
-        {
-            if (currentPlayer.remainingSteps == selectedCharacter.characterMobility)
-            {
-                player3Move = true;
-            }
-        }
-    }
-    public void P4MoveButton()
-    {
-        if (currentPlayer == playerList[3])
-        {
-            if (currentPlayer.remainingSteps == selectedCharacter.characterMobility)
-            {
-                player4Move = true;
             }
         }
     }
@@ -546,6 +404,305 @@ public class PlayerHandler : MonoBehaviour
         return cellCenterOffset;
     }
 
+    //Buttons
+
+        public void P1MoveButton()
+    {
+        if (currentPlayer == playerList[0])
+        {
+            if (currentPlayer.remainingSteps == selectedCharacter.characterMobility)
+            {
+                player1Move = true;
+            }
+        }
+    }
+    public void P2MoveButton()
+    {
+        if (currentPlayer == playerList[1])
+        {
+            if (currentPlayer.remainingSteps == selectedCharacter.characterMobility)
+            {
+                player2Move = true;
+            }
+        }
+    }
+    public void P3MoveButton()
+    {
+        if (currentPlayer == playerList[2])
+        {
+            if (currentPlayer.remainingSteps == selectedCharacter.characterMobility)
+            {
+                player3Move = true;
+            }
+        }
+    }
+    public void P4MoveButton()
+    {
+        if (currentPlayer == playerList[3])
+        {
+            if (currentPlayer.remainingSteps == selectedCharacter.characterMobility)
+            {
+                player4Move = true;
+            }
+        }
+    }
+
+    public void EndP1Turn()
+    {
+        if (currentPlayer == playerList[0])
+        {
+            currentPlayer = playerList[1];
+            if (player1Move)
+            {
+                player1Move = false;
+            }
+            foreach (Characters character in currentPlayer.team)
+            {
+                if (character.cooldownTimer > 0)
+                {
+                    character.cooldownTimer--;
+                }
+            }
+            currentPlayer.turnCounter++;
+        }
+    }
+    public void EndP2Turn()
+    {
+        if (totalPlayers == 2)
+        {
+            if (currentPlayer == playerList[1])
+            {
+                currentPlayer = playerList[0];
+                if (player2Move)
+                {
+                    player2Move = false;
+                }
+                foreach (Characters character in currentPlayer.team)
+                {
+                    if (character.cooldownTimer > 0)
+                    {
+                        character.cooldownTimer--;
+                    }
+                }
+                currentPlayer.turnCounter++;
+            }
+        }
+        else
+        {
+            if (currentPlayer == playerList[1])
+            {
+                currentPlayer = playerList[2];
+                if (player2Move)
+                {
+                    player2Move = false;
+                }
+                foreach (Characters character in currentPlayer.team)
+                {
+                    if (character.cooldownTimer > 0)
+                    {
+                        character.cooldownTimer--;
+                    }
+                }
+                currentPlayer.turnCounter++;
+            }
+        }
+    }
+    public void EndP3Turn()
+    {
+        if (totalPlayers == 3)
+        {
+            if (currentPlayer == playerList[2])
+            {
+                currentPlayer = playerList[0];
+                if (player3Move)
+                {
+                    player3Move = false;
+                }
+                foreach (Characters character in currentPlayer.team)
+                {
+                    if (character.cooldownTimer > 0)
+                    {
+                        character.cooldownTimer--;
+                    }
+                }
+                currentPlayer.turnCounter++;
+            }
+        }
+        else
+        {
+            if (currentPlayer == playerList[2])
+            {
+                currentPlayer = playerList[3];
+                if (player3Move)
+                {
+                    player3Move = false;
+                }
+                foreach (Characters character in currentPlayer.team)
+                {
+                    if (character.cooldownTimer > 0)
+                    {
+                        character.cooldownTimer--;
+                    }
+                }
+                currentPlayer.turnCounter++;
+            }
+        }
+    }
+    public void EndP4Turn()
+    {
+        if (currentPlayer == playerList[3])
+        {
+            currentPlayer = playerList[0];
+            if (player4Move)
+            {
+                player4Move = false;
+            }
+            foreach (Characters character in currentPlayer.team)
+            {
+                if (character.cooldownTimer > 0)
+                {
+                    character.cooldownTimer--;
+                }
+            }
+            currentPlayer.turnCounter++;
+        }
+    }
+
+    public void UseP1Ability()
+    {
+        if (selectedCharacter.cooldownTimer <= 0)
+        {
+            if (selectedCharacter.abilityID == 0 || selectedCharacter.abilityID == 2 || selectedCharacter.abilityID == 4)
+            {
+                UseAbility0();
+            }
+            if (selectedCharacter.abilityID == 1 || selectedCharacter.abilityID == 3)
+            {
+                scBackground.SetActive(true);
+                if (totalPlayers < 4)
+                {
+                    P4.SetActive(false);
+                }
+                if (totalPlayers < 3)
+                {
+                    P3.SetActive(false);
+                }
+            }
+        }
+    }
+    public void UseP2Ability()
+    {
+        if (selectedCharacter.cooldownTimer <= 0)
+        {
+            if (selectedCharacter.abilityID == 0 || selectedCharacter.abilityID == 2 || selectedCharacter.abilityID == 4)
+            {
+                UseAbility0();
+            }
+            if (selectedCharacter.abilityID == 1 || selectedCharacter.abilityID == 3)
+            {
+                scBackground.SetActive(true);
+                if (totalPlayers < 4)
+                {
+                    P4.SetActive(false);
+                }
+                if (totalPlayers < 3)
+                {
+                    P3.SetActive(false);
+                }
+            }
+        }
+    }
+    public void UseP3Ability()
+    {
+        if (selectedCharacter.cooldownTimer <= 0)
+        {
+            if (selectedCharacter.abilityID == 0 || selectedCharacter.abilityID == 2 || selectedCharacter.abilityID == 4)
+            {
+                UseAbility0();
+            }
+            if (selectedCharacter.abilityID == 1 || selectedCharacter.abilityID == 3)
+            {
+                scBackground.SetActive(true);
+                if (totalPlayers < 4)
+                {
+                    P4.SetActive(false);
+                }
+                if (totalPlayers < 3)
+                {
+                    P3.SetActive(false);
+                }
+            }
+        }
+    }
+    public void UseP4Ability()
+    {
+        if (selectedCharacter.cooldownTimer <= 0)
+        {
+            if (selectedCharacter.abilityID == 0 || selectedCharacter.abilityID == 2 || selectedCharacter.abilityID == 4)
+            {
+                UseAbility0();
+            }
+            if (selectedCharacter.abilityID == 1 || selectedCharacter.abilityID == 3)
+            {
+                scBackground.SetActive(true);
+                if (totalPlayers < 4)
+                {
+                    P4.SetActive(false);
+                }
+                if (totalPlayers < 3)
+                {
+                    P3.SetActive(false);
+                }
+            }
+        }
+    }
+    public void SelectTargetPlayer()
+    {
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (clickedButton.name == "P1")
+        {
+            _targetPlayer = playerList[0];
+        }
+        else if (clickedButton.name == "P2")
+        {
+            _targetPlayer = playerList[1];
+        }
+        else if (clickedButton.name == "P3")
+        {
+            _targetPlayer = playerList[2];
+        }
+        else if (clickedButton.name == "P4")
+        {
+            _targetPlayer = playerList[3];
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            targetCharactersImages[i].sprite = _targetPlayer.team[i].characterImage;
+        }
+    }
+    public void SelectTargetCharacter()
+    {
+        GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
+        if (clickedButton.name == "C1")
+        {
+            UseAbility1(_targetPlayer, _targetPlayer.team[0]);
+        }
+        else if (clickedButton.name == "C2")
+        {
+            UseAbility1(_targetPlayer, _targetPlayer.team[1]);
+        }
+        else if (clickedButton.name == "C3")
+        {
+            UseAbility1(_targetPlayer, _targetPlayer.team[2]);
+        }
+        StartCoroutine(DesactivarObjeto(scBackground));
+    }
+    private IEnumerator DesactivarObjeto(GameObject objeto)
+    {
+        yield return new WaitForSeconds(0.2f);
+        objeto.SetActive(false);
+    }
+
     //TRAPS
 
     private void SendToStartTrap()
@@ -567,6 +724,57 @@ public class PlayerHandler : MonoBehaviour
     {
         selectedCharacter.cooldownTimer = selectedCharacter.characterCooldown;
         cooldownText[currentPlayer.playerIndex].text = "" +  selectedCharacter.cooldownTimer;
+    }
+
+    //Abilities
+
+    private void UseAbility0()
+    {
+        StartCoroutine(Ability0());
+    }
+    IEnumerator Ability0()
+    {
+        currentPlayer.isProtected = true;
+        int playerIndex = currentPlayer.playerIndex;
+        int playerTurn = currentPlayer.turnCounter;
+        Debug.Log($"Bool activado en turno {playerTurn}");
+        selectedCharacter.cooldownTimer = selectedCharacter.characterCooldown;
+        cooldownText[currentPlayer.playerIndex].text = "" +  selectedCharacter.cooldownTimer;
+
+        yield return new WaitUntil(() => playerList[playerIndex].turnCounter >= playerTurn + 3);
+
+        playerList[playerIndex].isProtected = false;
+        Debug.Log($"Bool desactivado en turno {playerList[playerIndex].turnCounter}");
+    }
+    private void UseAbility1(Player targetPlayer, Characters targetCharacter)
+    {
+        if (!targetPlayer.isProtected)
+        {
+            targetCharacter.characterLifePoints -= 100;
+            if (targetCharacter.characterLifePoints <= 0)
+            {
+                Vector3 worldPosition = tilemap.CellToWorld(targetPlayer.startPosition) + cellCenterOffset();
+                targetCharacter.characterGO.transform.position = worldPosition;
+                targetCharacter.currentCell = targetPlayer.startPosition;
+                targetCharacter.Position = worldPosition;
+                targetCharacter.characterLifePoints = 300;
+            }
+        }
+        Debug.Log($"{targetCharacter.characterName} life points: {targetCharacter.characterLifePoints}");
+        selectedCharacter.cooldownTimer = selectedCharacter.characterCooldown;
+        cooldownText[currentPlayer.playerIndex].text = "" +  selectedCharacter.cooldownTimer;
+    }
+    private void UseAbility2()
+    {
+        
+    }
+    private void UseAbility3()
+    {
+        
+    }
+    private void UseAbility4()
+    {
+        
     }
 
 }

@@ -80,8 +80,8 @@ public class CharacterSelection : MonoBehaviour
             if (selectedPlayerTeam.Count == 3)
             {
                 player2Team = new List<Characters>(selectedPlayerTeam);                
-                Player player1 = new Player(0, "Player 1", player1Team, new Vector3Int(1,23,0));
-                Player player2 = new Player(1, "Player 2", player2Team, new Vector3Int(23,23,0));
+                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,23,0));
+                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(23,23,0));
                 PlayerHandler.playerList.Add(player1);
                 PlayerHandler.playerList.Add(player2);
                 ClearSelectedCharacters();
@@ -93,9 +93,9 @@ public class CharacterSelection : MonoBehaviour
             if (selectedPlayerTeam.Count == 3)
             {
                 player3Team = new List<Characters>(selectedPlayerTeam);                
-                Player player1 = new Player(0, "Player 1", player1Team, new Vector3Int(1,23,0));
-                Player player2 = new Player(1, "Player 2", player2Team, new Vector3Int(23,23,0));
-                Player player3 = new Player(2, "Player 3", player3Team, new Vector3Int(23,1,0));
+                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,23,0));
+                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(23,23,0));
+                Player player3 = new Player(2, -1, "Player 3", player3Team, new Vector3Int(23,1,0));
                 PlayerHandler.playerList.Add(player1);
                 PlayerHandler.playerList.Add(player2);
                 PlayerHandler.playerList.Add(player3);
@@ -108,10 +108,10 @@ public class CharacterSelection : MonoBehaviour
             if (selectedPlayerTeam.Count == 3)
             {
                 player4Team = new List<Characters>(selectedPlayerTeam);                
-                Player player1 = new Player(0, "Player 1", player1Team, new Vector3Int(1,23,0));
-                Player player2 = new Player(1, "Player 2", player2Team, new Vector3Int(23,23,0));
-                Player player3 = new Player(2, "Player 3", player3Team, new Vector3Int(23,1,0));
-                Player player4 = new Player(3, "Player 4", player4Team, new Vector3Int(1,1,0));
+                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,23,0));
+                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(23,23,0));
+                Player player3 = new Player(2, -1, "Player 3", player3Team, new Vector3Int(23,1,0));
+                Player player4 = new Player(3, -1, "Player 4", player4Team, new Vector3Int(1,1,0));
                 PlayerHandler.playerList.Add(player1);
                 PlayerHandler.playerList.Add(player2);
                 PlayerHandler.playerList.Add(player3);

@@ -12,16 +12,20 @@ public class Player
     public int currentCharacterIndex;
     public int remainingSteps;
     public int collectedStones;
+    public int turnCounter;
+    public bool isProtected;
 
-    public Player(int playerIndex, string playerName, List<Characters> team, Vector3Int startPosition)
+    public Player(int playerIndex, int turnCounter, string playerName, List<Characters> team, Vector3Int startPosition)
     {
         this.playerIndex = playerIndex;
         this.playerName = playerName;
         this.team = team;
         this.startPosition = startPosition;
+        this.turnCounter = turnCounter;
         playerTeam = team[0].characterTeam;
         currentCharacterIndex = 0;
         remainingSteps = 0;
         collectedStones = 0;
+        isProtected = false;
     }
 }
