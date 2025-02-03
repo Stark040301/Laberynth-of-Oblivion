@@ -20,12 +20,20 @@ public class PlayerHandler : MonoBehaviour
     public GameObject P4;
     public GameObject P3Panel;
     public GameObject P4Panel;
+    public GameObject P1Button;
+    public GameObject P2Button;
+    public GameObject P3Button;
+    public GameObject P4Button;
     [SerializeField] private TMP_Text[] abilityText;
     [SerializeField] private TMP_Text[] characterNamesText;
     [SerializeField] private TMP_Text[] currentMobility;
     [SerializeField] private TMP_Text[] colectedStonesText;
     [SerializeField] private TMP_Text[] cooldownText;
     [SerializeField] private Image[] targetCharactersImages;
+    [SerializeField] private Image[] P1CharacterLife;
+    [SerializeField] private Image[] P2CharacterLife;
+    [SerializeField] private Image[] P3CharacterLife;
+    [SerializeField] private Image[] P4CharacterLife;
     private System.Random random = new System.Random();
     public Characters _targetCharacter;
     public Player _targetPlayer;
@@ -106,8 +114,7 @@ public class PlayerHandler : MonoBehaviour
                 selectedCharacter = currentPlayer.team[0];
                 SetSpecificText(3,0);
             } 
-        }
-        currentPlayer.remainingSteps = selectedCharacter.characterMobility;  
+        }  
     }
     void Update()
     {
@@ -369,6 +376,7 @@ public class PlayerHandler : MonoBehaviour
                 }
             }
         }
+        LifeUI(currentPlayer, selectedCharacter);
         Debug.Log("Selected Character: " + selectedCharacter.characterName);
     }
     private void VictoryCondition()
@@ -451,6 +459,7 @@ public class PlayerHandler : MonoBehaviour
     {
         if (currentPlayer == playerList[0])
         {
+            currentPlayer.remainingSteps = selectedCharacter.characterMobility;
             currentPlayer = playerList[1];
             if (player1Move)
             {
@@ -464,6 +473,8 @@ public class PlayerHandler : MonoBehaviour
                 }
             }
             currentPlayer.turnCounter++;
+            P2Button.SetActive(true);
+            P1Button.SetActive(false);
         }
     }
     public void EndP2Turn()
@@ -472,6 +483,7 @@ public class PlayerHandler : MonoBehaviour
         {
             if (currentPlayer == playerList[1])
             {
+                currentPlayer.remainingSteps = selectedCharacter.characterMobility;
                 currentPlayer = playerList[0];
                 if (player2Move)
                 {
@@ -485,12 +497,15 @@ public class PlayerHandler : MonoBehaviour
                     }
                 }
                 currentPlayer.turnCounter++;
+                P1Button.SetActive(true);
+                P2Button.SetActive(false);
             }
         }
         else
         {
             if (currentPlayer == playerList[1])
             {
+                currentPlayer.remainingSteps = selectedCharacter.characterMobility;
                 currentPlayer = playerList[2];
                 if (player2Move)
                 {
@@ -504,6 +519,8 @@ public class PlayerHandler : MonoBehaviour
                     }
                 }
                 currentPlayer.turnCounter++;
+                P3Button.SetActive(true);
+                P2Button.SetActive(false);
             }
         }
     }
@@ -513,6 +530,7 @@ public class PlayerHandler : MonoBehaviour
         {
             if (currentPlayer == playerList[2])
             {
+                currentPlayer.remainingSteps = selectedCharacter.characterMobility;
                 currentPlayer = playerList[0];
                 if (player3Move)
                 {
@@ -526,12 +544,15 @@ public class PlayerHandler : MonoBehaviour
                     }
                 }
                 currentPlayer.turnCounter++;
+                P1Button.SetActive(true);
+                P3Button.SetActive(false);
             }
         }
         else
         {
             if (currentPlayer == playerList[2])
             {
+                currentPlayer.remainingSteps = selectedCharacter.characterMobility;
                 currentPlayer = playerList[3];
                 if (player3Move)
                 {
@@ -545,6 +566,8 @@ public class PlayerHandler : MonoBehaviour
                     }
                 }
                 currentPlayer.turnCounter++;
+                P4Button.SetActive(true);
+                P3Button.SetActive(false);
             }
         }
     }
@@ -552,6 +575,7 @@ public class PlayerHandler : MonoBehaviour
     {
         if (currentPlayer == playerList[3])
         {
+            currentPlayer.remainingSteps = selectedCharacter.characterMobility;
             currentPlayer = playerList[0];
             if (player4Move)
             {
@@ -565,6 +589,8 @@ public class PlayerHandler : MonoBehaviour
                 }
             }
             currentPlayer.turnCounter++;
+            P1Button.SetActive(true);
+            P4Button.SetActive(false);
         }
     }
 
@@ -760,6 +786,7 @@ public class PlayerHandler : MonoBehaviour
                 targetCharacter.characterLifePoints = 300;
             }
         }
+        LifeUI(targetPlayer, targetCharacter);
         Debug.Log($"{targetCharacter.characterName} life points: {targetCharacter.characterLifePoints}");
         selectedCharacter.cooldownTimer = selectedCharacter.characterCooldown;
         cooldownText[currentPlayer.playerIndex].text = "" +  selectedCharacter.cooldownTimer;
@@ -774,6 +801,133 @@ public class PlayerHandler : MonoBehaviour
     }
     private void UseAbility4()
     {
+        
+    }
+
+    //Others
+
+    private void LifeUI(Player player, Characters character)
+    {
+        if (character.characterLifePoints == 300)
+        {
+            switch (player.playerIndex)
+            {
+                case 0:
+                    foreach (Image image in P1CharacterLife)
+                    {
+                        image.sprite = Resources.Load<Sprite>("FH");
+                    }
+                    break;
+                case 1:
+                    foreach (Image image in P2CharacterLife)
+                    {
+                        image.sprite = Resources.Load<Sprite>("FH");
+                    }
+                    break;
+                case 2:
+                    foreach (Image image in P3CharacterLife)
+                    {
+                        image.sprite = Resources.Load<Sprite>("FH");
+                    }
+                    break;
+                case 3:
+                    foreach (Image image in P4CharacterLife)
+                    {
+                        image.sprite = Resources.Load<Sprite>("FH");
+                    }
+                    break;
+            }
+        }
+        else if (character.characterLifePoints == 250)
+        {
+            switch (player.playerIndex)
+            {
+                case 0:
+                    P1CharacterLife[2].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 1:
+                    P2CharacterLife[2].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 2:
+                    P3CharacterLife[2].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 3:
+                    P4CharacterLife[2].sprite = Resources.Load<Sprite>("HH");
+                    break;
+            }
+        }
+        else if (character.characterLifePoints == 200)
+        {
+            switch (player.playerIndex)
+            {
+                case 0:
+                    P1CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
+                    break;
+                case 1:
+                    P2CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
+                    break;
+                case 2:
+                    P3CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
+                    break;
+                case 3:
+                    P4CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
+                    break;
+            }
+        }
+        else if (character.characterLifePoints == 150)
+        {
+            switch (player.playerIndex)
+            {
+                case 0:
+                    P1CharacterLife[1].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 1:
+                    P2CharacterLife[1].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 2:
+                    P3CharacterLife[1].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 3:
+                    P4CharacterLife[1].sprite = Resources.Load<Sprite>("HH");
+                    break;
+            }
+        }
+        else if (character.characterLifePoints == 100)
+        {
+            switch (player.playerIndex)
+            {
+                case 0:
+                    P1CharacterLife[1].sprite = Resources.Load<Sprite>("EH");
+                    break;
+                case 1:
+                    P2CharacterLife[1].sprite = Resources.Load<Sprite>("EH");
+                    break;
+                case 2:
+                    P3CharacterLife[1].sprite = Resources.Load<Sprite>("EH");
+                    break;
+                case 3:
+                    P4CharacterLife[1].sprite = Resources.Load<Sprite>("EH");
+                    break;
+            }
+        }
+        else if (character.characterLifePoints == 50)
+        {
+            switch (player.playerIndex)
+            {
+                case 0:
+                    P1CharacterLife[0].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 1:
+                    P2CharacterLife[0].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 2:
+                    P3CharacterLife[0].sprite = Resources.Load<Sprite>("HH");
+                    break;
+                case 3:
+                    P4CharacterLife[0].sprite = Resources.Load<Sprite>("HH");
+                    break;
+            }
+        }
         
     }
 

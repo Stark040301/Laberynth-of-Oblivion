@@ -23,7 +23,7 @@ public class DataBase : MonoBehaviour
         5, 
         5,
         Resources.Load<Sprite>("A1"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IA1")
     ));
     
     AnimeTeam.Add(new Characters(
@@ -37,7 +37,7 @@ public class DataBase : MonoBehaviour
         4, 
         7,
         Resources.Load<Sprite>("A2"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IA2")
     ));
 
     AnimeTeam.Add(new Characters(
@@ -51,7 +51,7 @@ public class DataBase : MonoBehaviour
         5, 
         3,
         Resources.Load<Sprite>("A3"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IA3")
     ));
 
     AnimeTeam.Add(new Characters(
@@ -65,7 +65,7 @@ public class DataBase : MonoBehaviour
         4, 
         5,
         Resources.Load<Sprite>("A4"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("EIA4I")
     ));
 
     AnimeTeam.Add(new Characters(
@@ -79,7 +79,7 @@ public class DataBase : MonoBehaviour
         3, 
         3,
         Resources.Load<Sprite>("A5"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IA5")
     ));
 
     // Film Team
@@ -108,7 +108,7 @@ public class DataBase : MonoBehaviour
         5, 
         5,
         Resources.Load<Sprite>("F2"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IF2")
     ));
 
     FilmTeam.Add(new Characters(
@@ -122,7 +122,7 @@ public class DataBase : MonoBehaviour
         5, 
         3,
         Resources.Load<Sprite>("F3"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IF3")
     ));
 
     FilmTeam.Add(new Characters(
@@ -150,7 +150,7 @@ public class DataBase : MonoBehaviour
         5, 
         5,
         Resources.Load<Sprite>("F5"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IF5")
     ));
 
     // Disney Team
@@ -165,7 +165,7 @@ public class DataBase : MonoBehaviour
         4, 
         7,
         Resources.Load<Sprite>("D1"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("ID1")
     ));
 
     DisneyTeam.Add(new Characters(
@@ -179,7 +179,7 @@ public class DataBase : MonoBehaviour
         4, 
         5,
         Resources.Load<Sprite>("D2"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("ID2")
     ));
 
     DisneyTeam.Add(new Characters(
@@ -193,7 +193,7 @@ public class DataBase : MonoBehaviour
         5, 
         5,
         Resources.Load<Sprite>("D3"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("ID3")
     ));
 
     DisneyTeam.Add(new Characters(
@@ -207,7 +207,7 @@ public class DataBase : MonoBehaviour
         5, 
         5,
         Resources.Load<Sprite>("D4"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("ID4")
     ));
 
     DisneyTeam.Add(new Characters(
@@ -221,7 +221,7 @@ public class DataBase : MonoBehaviour
         5, 
         3,
         Resources.Load<Sprite>("D5"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("ID5")
     ));
 
     // Marvel Team
@@ -236,7 +236,7 @@ public class DataBase : MonoBehaviour
         5, 
         5,
         Resources.Load<Sprite>("M1"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IM1")
     ));
 
     MarvelTeam.Add(new Characters(
@@ -250,7 +250,7 @@ public class DataBase : MonoBehaviour
         5, 
         3,
         Resources.Load<Sprite>("M2"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IM2")
     ));
 
     MarvelTeam.Add(new Characters(
@@ -264,7 +264,7 @@ public class DataBase : MonoBehaviour
         4, 
         7,
         Resources.Load<Sprite>("M3"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IM3")
     ));
 
     MarvelTeam.Add(new Characters(
@@ -278,7 +278,7 @@ public class DataBase : MonoBehaviour
         5, 
         5,
         Resources.Load<Sprite>("M4"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IM4")
     ));
 
     MarvelTeam.Add(new Characters(
@@ -292,7 +292,7 @@ public class DataBase : MonoBehaviour
         6, 
         4,
         Resources.Load<Sprite>("M5"),
-        Resources.Load<Sprite>("EI")
+        Resources.Load<Sprite>("IM5")
     ));
 }
 

@@ -14,8 +14,13 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private TMP_Text[] characterNameTexts;
     [SerializeField] private TMP_Text playerIndicator;
     [SerializeField] private TMP_Text nextPlayerIndicator;
+    [SerializeField] private TMP_Text selectedCharacterName;
+    [SerializeField] private TMP_Text selectedCharacterAbility;
+    [SerializeField] private TMP_Text selectedCharacterCooldown;
+    [SerializeField] private TMP_Text selectedCharacterMobility;
+    [SerializeField] private TMP_Text selectedCharacterHistory;
     [SerializeField] private Image[] characterImages;
-    [SerializeField] private Image[] characterInfoImages;
+    [SerializeField] private Image characterInfoImage;
     [SerializeField] private Image[] buttonImages;
     public List<Characters> selectedPlayerTeam = new List<Characters>();
     public List<Characters> player1Team = new List<Characters>();
@@ -170,6 +175,7 @@ public class CharacterSelection : MonoBehaviour
             ClearSelectedCharacters();
             currentPlayer--;
         }
+        ClearUI();
     }
     public void NextPlayers()
     {
@@ -212,6 +218,7 @@ public class CharacterSelection : MonoBehaviour
                 nextPlayerUI.SetActive(false);
             }
         }
+        ClearUI();
     }
 
     public void SelectCharacters()
@@ -230,6 +237,7 @@ public class CharacterSelection : MonoBehaviour
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
+                        ClearUI();
                         }
                     }
                     buttonImages[0].color = Color.white;
@@ -239,23 +247,37 @@ public class CharacterSelection : MonoBehaviour
                 {
                     if (!Ischar1)
                     {
+                        Characters character = null;
                         if (index == 0)
                         {
                             selectedPlayerTeam.Add(DataBase.AnimeTeam[0]);
+                            character = DataBase.AnimeTeam[0];
                         }
                         else if (index == 1)
                         {
                             selectedPlayerTeam.Add(DataBase.FilmTeam[0]);
+                            character = DataBase.FilmTeam[0];
                         }
                         else if (index ==2)
                         {
                             selectedPlayerTeam.Add(DataBase.DisneyTeam[0]);
+                            character = DataBase.DisneyTeam[0];
                         }
                         else if (index ==3)
                         {
                             selectedPlayerTeam.Add(DataBase.MarvelTeam[0]);
+                            character = DataBase.MarvelTeam[0];
                         }
                         buttonImages[0].color = Color.green;
+                        if (character != null)
+                        {
+                            selectedCharacterName.text = character.characterName;
+                            selectedCharacterAbility.text = $"Habilidad: {character.characterAbilityName}:\n{character.characterAbility}";
+                            selectedCharacterMobility.text = $"Movilidad: {character.characterMobility} casillas";
+                            selectedCharacterCooldown.text = $"Enfriamiento: {character.characterCooldown} turnos";
+                            selectedCharacterHistory.text = $"Historia: {character.characterHistory}";
+                            characterInfoImage.sprite = character.characterInfoImage;
+                        }
                     }
 
                     if (Ischar1)
@@ -278,6 +300,7 @@ public class CharacterSelection : MonoBehaviour
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
+                        ClearUI();
                         }
                     }
                     buttonImages[1].color = Color.white;
@@ -287,23 +310,37 @@ public class CharacterSelection : MonoBehaviour
                 {
                     if (!Ischar2)
                     {
+                        Characters character = null;
                         if (index == 0)
                         {
                             selectedPlayerTeam.Add(DataBase.AnimeTeam[1]);
+                            character = DataBase.AnimeTeam[1];
                         }
                         else if (index == 1)
                         {
                             selectedPlayerTeam.Add(DataBase.FilmTeam[1]);
+                            character = DataBase.FilmTeam[1];
                         }
                         else if (index ==2)
                         {
                             selectedPlayerTeam.Add(DataBase.DisneyTeam[1]);
+                            character = DataBase.DisneyTeam[1];
                         }
                         else if (index ==3)
                         {
                             selectedPlayerTeam.Add(DataBase.MarvelTeam[1]);
+                            character = DataBase.MarvelTeam[1];
                         }
                         buttonImages[1].color = Color.green;
+                        if (character != null)
+                        {
+                            selectedCharacterName.text = character.characterName;
+                            selectedCharacterAbility.text = $"Habilidad: {character.characterAbilityName}:\n{character.characterAbility}";
+                            selectedCharacterMobility.text = $"Movilidad: {character.characterMobility} casillas";
+                            selectedCharacterCooldown.text = $"Enfriamiento: {character.characterCooldown} turnos";
+                            selectedCharacterHistory.text = $"Historia: {character.characterHistory}";
+                            characterInfoImage.sprite = character.characterInfoImage;
+                        }
                     }
 
                     if (Ischar2)
@@ -326,6 +363,7 @@ public class CharacterSelection : MonoBehaviour
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
+                        ClearUI();
                         }
                     }
                     buttonImages[2].color = Color.white;
@@ -335,23 +373,37 @@ public class CharacterSelection : MonoBehaviour
                 {
                     if (!Ischar3)
                     {
+                        Characters character = null;
                         if (index == 0)
                         {
                             selectedPlayerTeam.Add(DataBase.AnimeTeam[2]);
+                            character = DataBase.AnimeTeam[2];
                         }
                         else if (index == 1)
                         {
                             selectedPlayerTeam.Add(DataBase.FilmTeam[2]);
+                            character = DataBase.FilmTeam[2];
                         }
                         else if (index ==2)
                         {
                             selectedPlayerTeam.Add(DataBase.DisneyTeam[2]);
+                            character = DataBase.DisneyTeam[2];
                         }
                         else if (index ==3)
                         {
                             selectedPlayerTeam.Add(DataBase.MarvelTeam[2]);
+                            character = DataBase.MarvelTeam[2];
                         }
                         buttonImages[2].color = Color.green;
+                        if (character != null)
+                        {
+                            selectedCharacterName.text = character.characterName;
+                            selectedCharacterAbility.text = $"Habilidad: {character.characterAbilityName}:\n{character.characterAbility}";
+                            selectedCharacterMobility.text = $"Movilidad: {character.characterMobility} casillas";
+                            selectedCharacterCooldown.text = $"Enfriamiento: {character.characterCooldown} turnos";
+                            selectedCharacterHistory.text = $"Historia: {character.characterHistory}";
+                            characterInfoImage.sprite = character.characterInfoImage;
+                        }
                     }
 
                     if (Ischar3)
@@ -374,6 +426,7 @@ public class CharacterSelection : MonoBehaviour
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
+                        ClearUI();
                         }
                     }
                     buttonImages[3].color = Color.white;
@@ -383,23 +436,37 @@ public class CharacterSelection : MonoBehaviour
                 {
                     if (!Ischar4)
                     {
+                        Characters character = null;
                         if (index == 0)
                         {
                             selectedPlayerTeam.Add(DataBase.AnimeTeam[3]);
+                            character = DataBase.AnimeTeam[3];
                         }
                         else if (index == 1)
                         {
                             selectedPlayerTeam.Add(DataBase.FilmTeam[3]);
+                            character = DataBase.FilmTeam[3];
                         }
                         else if (index ==2)
                         {
                             selectedPlayerTeam.Add(DataBase.DisneyTeam[3]);
+                            character = DataBase.DisneyTeam[3];
                         }
                         else if (index ==3)
                         {
                             selectedPlayerTeam.Add(DataBase.MarvelTeam[3]);
+                            character = DataBase.MarvelTeam[3];
                         }
                         buttonImages[3].color = Color.green;
+                        if (character != null)
+                        {
+                            selectedCharacterName.text = character.characterName;
+                            selectedCharacterAbility.text = $"Habilidad: {character.characterAbilityName}:\n{character.characterAbility}";
+                            selectedCharacterMobility.text = $"Movilidad: {character.characterMobility} casillas";
+                            selectedCharacterCooldown.text = $"Enfriamiento: {character.characterCooldown} turnos";
+                            selectedCharacterHistory.text = $"Historia: {character.characterHistory}";
+                            characterInfoImage.sprite = character.characterInfoImage;
+                        }
                     }
 
                     if (Ischar4)
@@ -422,6 +489,7 @@ public class CharacterSelection : MonoBehaviour
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
+                        ClearUI();
                         }
                     }
                     buttonImages[4].color = Color.white;
@@ -431,23 +499,37 @@ public class CharacterSelection : MonoBehaviour
                 {
                     if (!Ischar5)
                     {
+                        Characters character = null;
                         if (index == 0)
                         {
                             selectedPlayerTeam.Add(DataBase.AnimeTeam[4]);
+                            character = DataBase.AnimeTeam[4];
                         }
                         else if (index == 1)
                         {
                             selectedPlayerTeam.Add(DataBase.FilmTeam[4]);
+                            character = DataBase.FilmTeam[4];
                         }
                         else if (index ==2)
                         {
                             selectedPlayerTeam.Add(DataBase.DisneyTeam[4]);
+                            character = DataBase.DisneyTeam[4];
                         }
                         else if (index ==3)
                         {
                             selectedPlayerTeam.Add(DataBase.MarvelTeam[4]);
+                            character = DataBase.MarvelTeam[4];
                         }
                         buttonImages[4].color = Color.green;
+                        if (character != null)
+                        {
+                            selectedCharacterName.text = character.characterName;
+                            selectedCharacterAbility.text = $"Habilidad: {character.characterAbilityName}:\n{character.characterAbility}";
+                            selectedCharacterMobility.text = $"Movilidad: {character.characterMobility} casillas";
+                            selectedCharacterCooldown.text = $"Enfriamiento: {character.characterCooldown} turnos";
+                            selectedCharacterHistory.text = $"Historia: {character.characterHistory}";
+                            characterInfoImage.sprite = character.characterInfoImage;
+                        }
                     }
 
                     if (Ischar5)
@@ -464,6 +546,16 @@ public class CharacterSelection : MonoBehaviour
                 Debug.LogError("Unknown button!");
                 break;
         }
+    }
+
+    public void ClearUI()
+    {
+        selectedCharacterName.text = "";
+        selectedCharacterAbility.text = "";
+        selectedCharacterMobility.text = "";
+        selectedCharacterCooldown.text = "";
+        selectedCharacterHistory.text = "";
+        characterInfoImage.sprite = Resources.Load<Sprite>("EI");
     }
 
 }
