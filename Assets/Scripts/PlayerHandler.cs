@@ -10,20 +10,23 @@ using UnityEngine.SceneManagement;
 using System;
 
 public class PlayerHandler : MonoBehaviour
+    // This class handles player actions, movements, and game state management.
 {
     [SerializeField] public Tilemap tilemap;
+    // Background object for the scene
     public GameObject scBackground;
-    public GameObject C1;
-    public GameObject C2;
-    public GameObject C3;
-    public GameObject P3;
-    public GameObject P4;
-    public GameObject P3Panel;
-    public GameObject P4Panel;
-    public GameObject P1Button;
-    public GameObject P2Button;
-    public GameObject P3Button;
-    public GameObject P4Button;
+    // GameObjects representing characters
+    public GameObject C1; // Character 1
+    public GameObject C2; // Character 2
+    public GameObject C3; // Character 3
+    public GameObject P3; // Panel for Player 3
+    public GameObject P4; // Panel for Player 4
+    public GameObject P3Panel; // UI Panel for Player 3
+    public GameObject P4Panel; // UI Panel for Player 4
+    public GameObject P1Button; // Button for Player 1 actions
+    public GameObject P2Button; // Button for Player 2 actions
+    public GameObject P3Button; // Button for Player 3 actions
+    public GameObject P4Button; // Button for Player 4 actions
     [SerializeField] private TMP_Text[] abilityText;
     [SerializeField] private TMP_Text[] characterNamesText;
     [SerializeField] private TMP_Text[] currentMobility;
@@ -42,6 +45,7 @@ public class PlayerHandler : MonoBehaviour
     public bool player3Move = false;
     public bool player2Move = false;
     public bool player4Move = false;
+    // Static variables to track if players have won
     public static bool p1HasWon = false;
     public static bool p2HasWon = false;
     public static bool p3HasWon = false;
@@ -66,6 +70,7 @@ public class PlayerHandler : MonoBehaviour
     public Tile trapTile; // Tile que representa una trampa
     public Tile itemTile; // Tile que representa un item
     public Tile pathTile; // Tile que representa un item
+    private SoundManager soundManager;
     private void Start()
     {
 
@@ -86,7 +91,9 @@ public class PlayerHandler : MonoBehaviour
         SetImages();
         SetText();
         PlayersTurns();
+        soundManager = FindObjectOfType<SoundManager>();
     }
+    // Method to manage player turns
     public void PlayersTurns()
     {
         if (currentPlayer == playerList[0])
@@ -138,6 +145,7 @@ public class PlayerHandler : MonoBehaviour
         VictoryCondition();
     }
 
+    // Method to move the selected character based on player input
     private void MoveCharacter(Characters character)
     {
         if (currentPlayer.remainingSteps > 0)
@@ -181,9 +189,8 @@ public class PlayerHandler : MonoBehaviour
                 }
                 if (targetTile == trapTile)
                 {
-                    StoneTrap();
-                    int x = random.Next(2);
-                    switch (x)
+                    int z = random.Next(2);
+                    switch (z)
                     {
                         case 0:
                             SendToStartTrap();
@@ -208,6 +215,7 @@ public class PlayerHandler : MonoBehaviour
             Debug.Log("El personaje no tiene pasos restantes.");
         }
     }
+    // Method to set character images in the UI
     private void SetImages()
     {
         if (playerList.Count > 0)
@@ -239,6 +247,7 @@ public class PlayerHandler : MonoBehaviour
             }
         }
     }
+    // Method to update text fields in the UI
     private void SetText()
     {
         SetSpecificText(0,0);
@@ -261,6 +270,7 @@ public class PlayerHandler : MonoBehaviour
         cooldownText[teamIndex].text = "" +  playerList[teamIndex].team[charIndex].cooldownTimer;
     }
 
+    // Method to instantiate characters in the game based on player data
     private void PlaceCharacters()
     {
         foreach (Player player in playerList)
@@ -283,6 +293,7 @@ public class PlayerHandler : MonoBehaviour
             }
         }
     }
+    // Method to select a character based on button clicks
     public void SelectCharacter()
     {
         GameObject clickedButton = EventSystem.current.currentSelectedGameObject;
@@ -379,9 +390,10 @@ public class PlayerHandler : MonoBehaviour
         LifeUI(currentPlayer, selectedCharacter);
         Debug.Log("Selected Character: " + selectedCharacter.characterName);
     }
+    // Method to check for victory conditions
     private void VictoryCondition()
     {
-        if (currentPlayer.collectedStones == 5)
+        if (currentPlayer.collectedStones == 3)
         {
             if (currentPlayer.playerIndex == 0)
             {
@@ -405,6 +417,7 @@ public class PlayerHandler : MonoBehaviour
             }
         }
     }
+    // Method to calculate the center offset of a tile cell
     private Vector3 cellCenterOffset()
     {
         Vector3 cellSize = tilemap.cellSize; // Tamaño del tile (ancho, alto, profundidad)
@@ -414,7 +427,7 @@ public class PlayerHandler : MonoBehaviour
 
     //Buttons
 
-        public void P1MoveButton()
+    public void P1MoveButton()
     {
         if (currentPlayer == playerList[0])
         {
@@ -455,6 +468,7 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
+    // Method to end Player 1's turn and switch to the next player
     public void EndP1Turn()
     {
         if (currentPlayer == playerList[0])
@@ -594,6 +608,7 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
+    // Methods to use Players ability
     public void UseP1Ability()
     {
         if (selectedCharacter.cooldownTimer <= 0)
@@ -614,6 +629,7 @@ public class PlayerHandler : MonoBehaviour
                     P3.SetActive(false);
                 }
             }
+            soundManager.SelectAudio(selectedCharacter.characterID, 1f);
         }
     }
     public void UseP2Ability()
@@ -636,6 +652,7 @@ public class PlayerHandler : MonoBehaviour
                     P3.SetActive(false);
                 }
             }
+            soundManager.SelectAudio(selectedCharacter.characterID, 1f);
         }
     }
     public void UseP3Ability()
@@ -658,6 +675,7 @@ public class PlayerHandler : MonoBehaviour
                     P3.SetActive(false);
                 }
             }
+            soundManager.SelectAudio(selectedCharacter.characterID, 1f);
         }
     }
     public void UseP4Ability()
@@ -680,6 +698,7 @@ public class PlayerHandler : MonoBehaviour
                     P3.SetActive(false);
                 }
             }
+            soundManager.SelectAudio(selectedCharacter.characterID, 1f);
         }
     }
     public void SelectTargetPlayer()
@@ -806,6 +825,7 @@ public class PlayerHandler : MonoBehaviour
 
     //Others
 
+    // Method to update the life UI based on character's life points
     private void LifeUI(Player player, Characters character)
     {
         if (character.characterLifePoints == 300)
@@ -862,15 +882,19 @@ public class PlayerHandler : MonoBehaviour
             {
                 case 0:
                     P1CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
+                    P1CharacterLife[1].sprite = Resources.Load<Sprite>("FH");
                     break;
                 case 1:
                     P2CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
+                    P2CharacterLife[1].sprite = Resources.Load<Sprite>("FH");
                     break;
                 case 2:
                     P3CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
+                    P3CharacterLife[1].sprite = Resources.Load<Sprite>("FH");
                     break;
                 case 3:
                     P4CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
+                    P4CharacterLife[1].sprite = Resources.Load<Sprite>("FH");
                     break;
             }
         }
@@ -898,15 +922,19 @@ public class PlayerHandler : MonoBehaviour
             {
                 case 0:
                     P1CharacterLife[1].sprite = Resources.Load<Sprite>("EH");
+                    P1CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
                     break;
                 case 1:
                     P2CharacterLife[1].sprite = Resources.Load<Sprite>("EH");
+                    P2CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
                     break;
                 case 2:
                     P3CharacterLife[1].sprite = Resources.Load<Sprite>("EH");
+                    P3CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
                     break;
                 case 3:
                     P4CharacterLife[1].sprite = Resources.Load<Sprite>("EH");
+                    P4CharacterLife[2].sprite = Resources.Load<Sprite>("EH");
                     break;
             }
         }

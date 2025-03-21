@@ -6,8 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// This class handles character selection for the game
 public class CharacterSelection : MonoBehaviour
 {
+    // UI elements for character selection
     [SerializeField] private GameObject startGameButton;
     [SerializeField] private GameObject nextPlayerUI;
     [SerializeField] private TMP_Dropdown dropdown;
@@ -22,11 +24,15 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private Image[] characterImages;
     [SerializeField] private Image characterInfoImage;
     [SerializeField] private Image[] buttonImages;
+
+    // Lists to store selected characters for each player
     public List<Characters> selectedPlayerTeam = new List<Characters>();
     public List<Characters> player1Team = new List<Characters>();
     public List<Characters> player2Team = new List<Characters>();
     public List<Characters> player3Team = new List<Characters>();
     public List<Characters> player4Team = new List<Characters>();
+
+    // Flags to track selected characters
     private bool Ischar1 = false;
     private bool Ischar2 = false;
     private bool Ischar3 = false;
@@ -34,16 +40,15 @@ public class CharacterSelection : MonoBehaviour
     private bool Ischar5 = false;
     int currentPlayer = 1;
 
+    // Initialize character selection
     void Start()
     {
         DataBase.InitializeCharacters();
-        // Suscribir el evento al método
         dropdown.onValueChanged.AddListener(UpdateCharacterNames);
-
-        // Inicializar los textos al inicio
         UpdateCharacterNames(dropdown.value);
     }
     
+    // Update character names and images based on selected team
     void UpdateCharacterNames(int index)
     {
         List<Characters> selectedTeam = index switch
@@ -64,6 +69,8 @@ public class CharacterSelection : MonoBehaviour
             characterImages[i].sprite = selectedTeam[i].characterImage;
         }
     }
+
+    // Clear selected characters and reset UI
     public void ClearSelectedCharacters()
     {
         selectedPlayerTeam.Clear();
@@ -76,17 +83,18 @@ public class CharacterSelection : MonoBehaviour
         {
             button.color = Color.white;
         }
-
     }
+
+    // Start the game with selected characters
     public void StartGame()
     {
         if (currentPlayer == 2)
         {
-            if (selectedPlayerTeam.Count == 3)
+            if (selectedPlayerTeam.Count == 3 && selectedPlayerTeam[0].characterTeam != player1Team[0].characterTeam)
             {
                 player2Team = new List<Characters>(selectedPlayerTeam);                
-                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,23,0));
-                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(23,23,0));
+                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,15,0));
+                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(15,15,0));
                 PlayerHandler.playerList.Add(player1);
                 PlayerHandler.playerList.Add(player2);
                 ClearSelectedCharacters();
@@ -95,12 +103,12 @@ public class CharacterSelection : MonoBehaviour
         }
         else if (currentPlayer == 3)
         {
-            if (selectedPlayerTeam.Count == 3)
+            if (selectedPlayerTeam.Count == 3 && selectedPlayerTeam[0].characterTeam != player1Team[0].characterTeam && selectedPlayerTeam[0].characterTeam != player2Team[0].characterTeam)
             {
                 player3Team = new List<Characters>(selectedPlayerTeam);                
-                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,23,0));
-                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(23,23,0));
-                Player player3 = new Player(2, -1, "Player 3", player3Team, new Vector3Int(23,1,0));
+                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,15,0));
+                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(15,15,0));
+                Player player3 = new Player(2, -1, "Player 3", player3Team, new Vector3Int(15,1,0));
                 PlayerHandler.playerList.Add(player1);
                 PlayerHandler.playerList.Add(player2);
                 PlayerHandler.playerList.Add(player3);
@@ -110,12 +118,12 @@ public class CharacterSelection : MonoBehaviour
         }
         else if (currentPlayer == 4)
         {
-            if (selectedPlayerTeam.Count == 3)
+            if (selectedPlayerTeam.Count == 3 && selectedPlayerTeam[0].characterTeam != player1Team[0].characterTeam && selectedPlayerTeam[0].characterTeam != player2Team[0].characterTeam && selectedPlayerTeam[0].characterTeam != player3Team[0].characterTeam)
             {
                 player4Team = new List<Characters>(selectedPlayerTeam);                
-                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,23,0));
-                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(23,23,0));
-                Player player3 = new Player(2, -1, "Player 3", player3Team, new Vector3Int(23,1,0));
+                Player player1 = new Player(0, 0, "Player 1", player1Team, new Vector3Int(1,15,0));
+                Player player2 = new Player(1, -1, "Player 2", player2Team, new Vector3Int(15,15,0));
+                Player player3 = new Player(2, -1, "Player 3", player3Team, new Vector3Int(15,1,0));
                 Player player4 = new Player(3, -1, "Player 4", player4Team, new Vector3Int(1,1,0));
                 PlayerHandler.playerList.Add(player1);
                 PlayerHandler.playerList.Add(player2);
@@ -142,6 +150,8 @@ public class CharacterSelection : MonoBehaviour
             Debug.Log(character.characterName);
         }
     }
+
+    // Go back to previous screen
     public void GoBack()
     {
         if (currentPlayer == 1)
@@ -177,6 +187,8 @@ public class CharacterSelection : MonoBehaviour
         }
         ClearUI();
     }
+
+    // Move to next player's selection
     public void NextPlayers()
     {
         if (currentPlayer == 1)
@@ -197,7 +209,7 @@ public class CharacterSelection : MonoBehaviour
         }
         else if (currentPlayer == 2)
         {
-            if (selectedPlayerTeam.Count == 3)
+            if (selectedPlayerTeam.Count == 3 && selectedPlayerTeam[0].characterTeam != player1Team[0].characterTeam)
             {
                 player2Team = new List<Characters>(selectedPlayerTeam);                
                 ClearSelectedCharacters();
@@ -208,7 +220,7 @@ public class CharacterSelection : MonoBehaviour
         }
         else if (currentPlayer == 3)
         {
-            if (selectedPlayerTeam.Count == 3)
+            if (selectedPlayerTeam.Count == 3 && selectedPlayerTeam[0].characterTeam != player1Team[0].characterTeam && selectedPlayerTeam[0].characterTeam != player2Team[0].characterTeam)
             {
                 player3Team = new List<Characters>(selectedPlayerTeam);                
                 ClearSelectedCharacters();
@@ -221,6 +233,7 @@ public class CharacterSelection : MonoBehaviour
         ClearUI();
     }
 
+    // Select a character
     public void SelectCharacters()
     {
         int index = dropdown.value;
@@ -228,12 +241,12 @@ public class CharacterSelection : MonoBehaviour
         switch (buttonName)
         {
             case "Char1":
-                if(Ischar1)//This is for unselecting selected characters
+                if(Ischar1)
                 {
                     for (int i = selectedPlayerTeam.Count - 1; i >= 0 ; i--)
                     {
                         Characters character = selectedPlayerTeam[i];
-                        if( character == DataBase.AnimeTeam[0] || character == DataBase.FilmTeam[0] || character == DataBase.DisneyTeam[0] || character == DataBase.MarvelTeam[0])//This is for unselecting selected characters
+                        if( character == DataBase.AnimeTeam[0] || character == DataBase.FilmTeam[0] || character == DataBase.DisneyTeam[0] || character == DataBase.MarvelTeam[0])// This is for unselecting characters
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
@@ -291,12 +304,12 @@ public class CharacterSelection : MonoBehaviour
                 }
                 break;
             case "Char2":
-                if(Ischar2)//This is for unselecting selected characters
+                if(Ischar2)
                 {
                     for (int i = selectedPlayerTeam.Count - 1; i >= 0 ; i--)
                     {
                         Characters character = selectedPlayerTeam[i];
-                        if( character == DataBase.AnimeTeam[1] || character == DataBase.FilmTeam[1] || character == DataBase.DisneyTeam[1] || character == DataBase.MarvelTeam[1])//This is for unselecting selected characters
+                        if( character == DataBase.AnimeTeam[1] || character == DataBase.FilmTeam[1] || character == DataBase.DisneyTeam[1] || character == DataBase.MarvelTeam[1])
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
@@ -354,12 +367,12 @@ public class CharacterSelection : MonoBehaviour
                 }
                 break;
             case "Char3":
-                if(Ischar3)//This is for unselecting selected characters
+                if(Ischar3)
                 {
                     for (int i = selectedPlayerTeam.Count - 1; i >= 0 ; i--)
                     {
                         Characters character = selectedPlayerTeam[i];
-                        if( character == DataBase.AnimeTeam[2] || character == DataBase.FilmTeam[2] || character == DataBase.DisneyTeam[2] || character == DataBase.MarvelTeam[2])//This is for unselecting selected characters
+                        if( character == DataBase.AnimeTeam[2] || character == DataBase.FilmTeam[2] || character == DataBase.DisneyTeam[2] || character == DataBase.MarvelTeam[2])
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
@@ -417,12 +430,12 @@ public class CharacterSelection : MonoBehaviour
                 }
                 break;
             case "Char4":
-                if(Ischar4)//This is for unselecting selected characters
+                if(Ischar4)
                 {
                     for (int i = selectedPlayerTeam.Count - 1; i >= 0 ; i--)
                     {
                         Characters character = selectedPlayerTeam[i];
-                        if( character == DataBase.AnimeTeam[3] || character == DataBase.FilmTeam[3] || character == DataBase.DisneyTeam[3] || character == DataBase.MarvelTeam[3])//This is for unselecting selected characters
+                        if( character == DataBase.AnimeTeam[3] || character == DataBase.FilmTeam[3] || character == DataBase.DisneyTeam[3] || character == DataBase.MarvelTeam[3])
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
@@ -480,12 +493,12 @@ public class CharacterSelection : MonoBehaviour
                 }
                 break;
             case "Char5":
-                if(Ischar5)//This is for unselecting selected characters
+                if(Ischar5)
                 {
                     for (int i = selectedPlayerTeam.Count - 1; i >= 0 ; i--)
                     {
                         Characters character = selectedPlayerTeam[i];
-                        if( character == DataBase.AnimeTeam[4] || character == DataBase.FilmTeam[4] || character == DataBase.DisneyTeam[4] || character == DataBase.MarvelTeam[4])//This is for unselecting selected characters
+                        if( character == DataBase.AnimeTeam[4] || character == DataBase.FilmTeam[4] || character == DataBase.DisneyTeam[4] || character == DataBase.MarvelTeam[4])
                         {
                         selectedPlayerTeam.RemoveAt(i);
                         Debug.Log(character.characterName + "Unselected");
@@ -548,6 +561,7 @@ public class CharacterSelection : MonoBehaviour
         }
     }
 
+    // Clear character info UI
     public void ClearUI()
     {
         selectedCharacterName.text = "";
@@ -557,5 +571,4 @@ public class CharacterSelection : MonoBehaviour
         selectedCharacterHistory.text = "";
         characterInfoImage.sprite = Resources.Load<Sprite>("EI");
     }
-
 }

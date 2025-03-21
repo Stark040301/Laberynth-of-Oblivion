@@ -4,19 +4,16 @@ using UnityEngine;
 using TMPro;
 
 public class EndSceneManager : MonoBehaviour
+    // This class manages the end scene and displays the victory message.
 {
     [SerializeField] private TMP_Text victoryText;
-    
+
     void Start()
     {
         Victory();
     }
 
-    void Update()
-    {
-        
-    }
-
+    // Method to display the victory message based on the winning player
     private void Victory()
     {
         if (PlayerHandler.p1HasWon)
