@@ -30,7 +30,7 @@ Labyrinth of Oblivion
 2. **Pick 3 Villains:** Customize your team by selecting 3 villains from your chosen faction.
 3. **Navigate the Maze:** Use strategy to move, avoid traps, and outmaneuver opponents.
 4. **Use Abilities:** Utilize your villains' special abilities to gain an advantage.
-5. **Escape the Maze:** The first team to colect 5 stones wins the game.
+5. **Escape the Maze:** The first team to colect 3 stones wins the game.
 
 ---
 
